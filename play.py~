@@ -14,12 +14,12 @@ if not pygame.image.get_extended():
 
 
 
-BACKGROUND_NAME= "screen.jpg" 
-FK_NAME="jj.jpg"
-DOGE_1="doge1.png"
-DOGE_2="doge2.png"
-DOGE_3="doge3.png"
-os.system("scrot screen.jpg")
+BACKGROUND_NAME= "data/screen.jpg" 
+FK_NAME="data/jj.jpg"
+DOGE_1="data/doge1.png"
+DOGE_2="data/doge2.png"
+DOGE_3="data/doge3.png"
+os.system("scrot data/screen.jpg")
 list = []
 
 
@@ -193,10 +193,10 @@ class Score(pygame.sprite.Sprite):
 
     SCREENRECT     = Rect(0, 0,info.current_w,info.current_h)
 
+
     if pygame.mixer and not pygame.mixer.get_init():
         print ('Warning, no sound')
         pygame.mixer = None
-
     # Set the display mode
     winstyle = FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
@@ -233,6 +233,10 @@ class Score(pygame.sprite.Sprite):
 def main(winstyle = 0):
     #Load images, assign to sprite classes
     pygame.init()
+
+    if pygame.mixer and not pygame.mixer.get_init():
+        print ('Warning, no sound')
+        pygame.mixer = None
     #(do this before the classes are used, after screen setup)
     img = load_image('player1.png')
     img = pygame.transform.scale(img,(90,60))

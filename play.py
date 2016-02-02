@@ -193,10 +193,10 @@ class Score(pygame.sprite.Sprite):
 
     SCREENRECT     = Rect(0, 0,info.current_w,info.current_h)
 
+
     if pygame.mixer and not pygame.mixer.get_init():
         print ('Warning, no sound')
         pygame.mixer = None
-
     # Set the display mode
     winstyle = FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
@@ -232,7 +232,24 @@ class Score(pygame.sprite.Sprite):
 
 def main(winstyle = 0):
     #Load images, assign to sprite classes
+    
     pygame.init()
+    info = pygame.display.Info()
+
+
+
+
+    SCREENRECT     = Rect(0, 0,info.current_w,info.current_h)
+
+
+    if pygame.mixer and not pygame.mixer.get_init():
+        print ('Warning, no sound')
+        pygame.mixer = None
+    # Set the display mode
+    winstyle = FULLSCREEN
+    bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
+    global screen
+    screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
     #(do this before the classes are used, after screen setup)
     img = load_image('player1.png')
     img = pygame.transform.scale(img,(90,60))
