@@ -14,12 +14,12 @@ if not pygame.image.get_extended():
 
 
 
-BACKGROUND_NAME= "screen.jpg" 
-FK_NAME="jj.jpg"
-DOGE_1="doge1.png"
-DOGE_2="doge2.png"
-DOGE_3="doge3.png"
-os.system("scrot screen.jpg")
+BACKGROUND_NAME= "data/screen.jpg" 
+FK_NAME="data/jj.jpg"
+DOGE_1="data/doge1.png"
+DOGE_2="data/doge2.png"
+DOGE_3="data/doge3.png"
+os.system("scrot data/screen.jpg")
 list = []
 
 
