@@ -5,16 +5,31 @@ import random, os.path
 #import basic pygame modules
 import pygame
 from pygame.locals import *
-
+from random import shuffle
+import random
+import time
 #see if we can load more than standard BMP
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
 
 
+
+BACKGROUND_NAME= "screen.jpg" 
+FK_NAME="jj.jpg"
+DOGE_1="doge1.png"
+DOGE_2="doge2.png"
+DOGE_3="doge3.png"
+os.system("scrot screen.jpg")
+list = []
+
+
+
+
+
 #game constants
 MAX_SHOTS      = 2      #most player bullets onscreen
 ALIEN_ODDS     = 3    #chances a new alien appears
-BOMB_ODDS      = 10    #chances a new bomb will drop
+BOMB_ODDS      = 40    #chances a new bomb will drop
 ALIEN_RELOAD   = 12     #frames between new aliens
 SCREENRECT     = Rect(0, 0, 1366, 768)
 SCORE          = 0
@@ -168,11 +183,13 @@ class Score(pygame.sprite.Sprite):
 
 
 
-def main(winstyle = 0):
     # Initialize pygame
-    pygame.init()
     
+    pygame.init()
     info = pygame.display.Info()
+
+
+
 
     SCREENRECT     = Rect(0, 0,info.current_w,info.current_h)
 
@@ -183,9 +200,39 @@ def main(winstyle = 0):
     # Set the display mode
     winstyle = FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
+    global screen
     screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
 
+###################
+    fk = pygame.image.load(FK_NAME)
+    fk = pygame.transform.scale(fk,(info.current_w,info.current_h))
+   
+    for x in xrange(-100,info.current_w,100):
+        for y in xrange(-100,info.current_h,108):
+            list.append((x,y))
+    background = pygame.image.load(BACKGROUND_NAME)
+    screen.blit(background,(0,0))
+    pygame.display.update()
+   
+    doge = pygame.image.load(DOGE_1)
+    doge = pygame.transform.scale(doge,(200,200))
+    shuffle(list)
+    while len(list)>0:
+        doge_=pygame.transform.rotate(doge, random.random()*40)  
+        screen.blit(doge_,list.pop()) 
+        pygame.display.update()
+        time.sleep(0.00001*len(list)**2+0.02)
+    time.sleep(2) 
+   
+    screen.blit(fk,(0,0))
+
+    pygame.display.update()
+    time.sleep(3)
+################
+
+def main(winstyle = 0):
     #Load images, assign to sprite classes
+    pygame.init()
     #(do this before the classes are used, after screen setup)
     img = load_image('player1.png')
     img = pygame.transform.scale(img,(90,60))
@@ -248,7 +295,7 @@ def main(winstyle = 0):
         all.add(Score())
 
 
-    while player.alive() or Score<100:
+    while player.alive() and  SCORE<100:
 
         #get input
         for event in pygame.event.get():
@@ -282,7 +329,7 @@ def main(winstyle = 0):
         # Drop bombs
         if lastalien and not int(random.random() * BOMB_ODDS):
             Bomb(lastalien.sprite)
-
+    
         # Detect collisions
         for alien in pygame.sprite.spritecollide(player, aliens, 1):
             boom_sound.play()
@@ -311,12 +358,12 @@ def main(winstyle = 0):
 
     if pygame.mixer:
         pygame.mixer.music.fadeout(1000)
-    if Score >=100:
-        pygame.quit()
-        return 1
-    else:
+    if SCORE >=100:
         pygame.quit()
         return 0
+    else:
+        pygame.quit()
+        return 1
 #call the "main" function if running this script
 if __name__ == '__main__': 
     while(main()):
